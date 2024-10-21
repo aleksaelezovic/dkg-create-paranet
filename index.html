@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DKG - Create Paranet</title>
+    <link
+      rel="icon"
+      href="https://origintrail.io/favicon.ico"
+      type="image/x-icon"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"
+      async
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/dkg.js@latest/dist/dkg.min.js"
+      async
+      defer
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <noscript style="text-align: center">
+      <p>
+        <strong>NOTE:</strong>
+        Paranet creation from the browser requires client-side javascript!
+      </p>
+      <p>
+        You can see a guide on how to create a Paranet manually
+        <a
+          href="https://docs.origintrail.io/dkg-v6-current-version/dkg-sdk/dkg-v6-js-client/interact-with-dkg-paranets#creating-a-paranet"
+          style="color: lightblue"
+        >
+          here
+        </a>
+      </p>
+    </noscript>
+    <main>
+      <hgroup>
+        <h1>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 26 26"
+            fill="inherit"
+            style="vertical-align: middle"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12.8571 6.4658C9.28831 6.4658 6.39475 9.39105 6.39475 13C6.39475 16.6084 9.28831 19.5337 12.8571 19.5337C14.8408 19.5337 16.6154 18.6296 17.8007 17.2071L22.6932 21.3708C20.3347 24.2011 16.8039 25.9999 12.8571 25.9999C5.7561 25.9999 0 20.1795 0 13C0 5.82006 5.7561 0 12.8571 0V6.4658ZM23.9668 19.5462L18.4409 16.2901C18.6295 15.9637 18.791 15.6194 18.922 15.2601L24.924 17.4968C24.6634 18.2117 24.3419 18.8967 23.9668 19.5462ZM19.3191 12.9999H25.7143C25.7143 12.2298 25.6477 11.4755 25.5206 10.7422L19.2218 11.8652C19.2856 12.2338 19.3191 12.6129 19.3191 12.9999ZM22.7403 4.6852L17.8246 8.82087C17.5838 8.52862 17.3183 8.25813 17.0313 8.01231L21.1619 3.07656C21.7329 3.56562 22.2613 4.10376 22.7403 4.6852Z"
+            >
+              <title>OriginTrail Logo</title>
+            </path>
+          </svg>
+          Paranet Creation tool
+        </h1>
+        <details>
+          <summary>
+            This tool was made in order to help you create a new Paranet.
+          </summary>
+          <ol>
+            <li>
+              It creates a new Knowledge Asset with provided JSON-LD.
+              <br />
+              This will represent the Paranet on the <abbr>DKG</abbr>
+              (Decentralized Knowledge Graph)
+            </li>
+            <li>
+              It links the created Paranet to the Knowledge Asset using it's
+              <abbr>UAL</abbr> (Universal Asset Locator), establishing it on the
+              blockchain.
+            </li>
+          </ol>
+          <p>
+            This on-chain representation allows for decentralized management and
+            interaction with the Paranet.
+          </p>
+        </details>
+      </hgroup>
+      <form>
+        <fieldset style="display: flex; flex-direction: column; gap: 10px">
+          <legend><h1>Create Paranet</h1></legend>
+
+          <div>
+            <label for="pname">Paranet Name</label>
+            <input
+              id="pname"
+              name="paranetName"
+              type="text"
+              placeholder="CarsParanet"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="pdesc">Paranet Description</label><br />
+            <input
+              id="pdesc"
+              name="paranetDesc"
+              type="text"
+              placeholder="Cars paranet for demonstration purposes."
+              style="width: 20rem"
+              required
+            />
+          </div>
+
+          <fieldset class="dkg">
+            <legend>Your OT-Node</legend>
+            <div>
+              <label for="endpoint">Endpoint</label>
+              <input
+                id="endpoint"
+                name="nodeEndpoint"
+                autocomplete="nodeEndpoint"
+                type="text"
+                placeholder="Gateway URL"
+                style="width: 20rem"
+                required
+              />
+
+              <label for="port">PORT</label>
+              <input
+                id="port"
+                type="number"
+                placeholder="8900"
+                value="8900"
+                setp="1"
+                style="width: 5rem"
+              />
+            </div>
+
+            <div>
+              <label for="blk">Blockchain</label>
+              <input
+                id="blk"
+                type="text"
+                placeholder="base:84532"
+                list="blk-options"
+                required
+              />
+
+              <label for="env">Env</label>
+              <input
+                id="env"
+                type="text"
+                placeholder="testnet"
+                list="env-options"
+                required
+              />
+
+              <datalist id="blk-options">
+                <option value="otp:2043">Neuro Mainnet</option>
+                <option value="base:8453">Base Mainnet</option>
+                <option value="base:84532">Base Sepolia Testnet</option>
+                <option value="base:100">Gnosis Mainnet</option>
+                <option value="gnosis:10200">Gnosis Chiado Testnet</option>
+              </datalist>
+              <datalist id="env-options">
+                <option value="mainnet">Mainnet</option>
+                <option value="testnet">Testnet</option>
+                <option value="devnet">Devnet</option>
+              </datalist>
+            </div>
+          </fieldset>
+
+          <fieldset class="asset">
+            <legend>Knowledge Asset</legend>
+            <p>
+              Here you can either set the UAL of already created Knowledge Asset
+              <strong>OR</strong> provide the JSON-LD and the Knowledge Asset
+              will be created for you.
+            </p>
+            <input
+              id="assetUAL"
+              type="text"
+              placeholder="Knowledge Asset UAL"
+              name="assetUAL"
+              autocomplete="assetUAL"
+            />
+            <textarea id="asset" rows="5"></textarea>
+          </fieldset>
+
+          <button id="create">Create Paranet</button>
+        </fieldset>
+      </form>
+
+      <div class="result">
+        <label for="paranetUAL">Paranet UAL:</label>
+        <input
+          type="text"
+          id="paranetUAL"
+          placeholder="The UAL of created paranet will show here."
+          readonly
+        />
+        <button onclick="navigator.clipboard.writeText(paranetUAL.value)">
+          Copy
+        </button>
+      </div>
+    </main>
+    <dialog id="alert">
+      <h1>Error</h1>
+      <p>Error message.</p>
+      <form method="dialog">
+        <button>OK</button>
+      </form>
+    </dialog>
+    <script>
+      function assert(x, msg) {
+        if (!x) throw new Error(msg);
+      }
+      function alert(msg) {
+        alertDialog.querySelector("p").innerText = msg;
+        alertDialog.showModal();
+      }
+
+      const alertDialog = document.getElementById("alert");
+      const createForm = document.querySelector("form");
+      const createButton = document.getElementById("create");
+
+      const asset = document.getElementById("asset");
+      const assetUAL = document.getElementById("assetUAL");
+      assetUAL.oninput = function (e) {
+        asset.disabled = !!e.target.value;
+        if (!assetUAL.value && !asset.innerHTML) {
+          asset.innerHTML = JSON.stringify(DEFAULT_ASSET, null, 4);
+        }
+      };
+
+      const paranetUAL = document.getElementById("paranetUAL");
+
+      function storeAssetUAL(value) {
+        localStorage.setItem("assetUAL", value);
+      }
+
+      function loadAssetUAL() {
+        const storedUAL = localStorage.getItem("assetUAL") ?? "";
+        assetUAL.value = storedUAL;
+        assetUAL.dispatchEvent(new Event("input"));
+      }
+
+      let loading = false;
+      function setLoading(val) {
+        loading = !!val;
+        createButton.disabled = !!val;
+        createButton.type = val ? "text" : "submit";
+        createButton.innerText = val ? "Loading..." : "Create Paranet";
+      }
+
+      async function createParanet(e) {
+        if (e) e.preventDefault();
+        if (loading) return;
+
+        try {
+          setLoading(true);
+          /* Get data */
+          const endpoint = document.getElementById("endpoint").value;
+          const port = document.getElementById("port").value;
+          const env = document.getElementById("env").value;
+          const blk = document.getElementById("blk").value;
+          const paranetName = document.getElementById("pname").value;
+          const paranetDescription = document.getElementById("pdesc").value;
+
+          /* Setup DKG.js */
+          const dkg = new DKG({
+            environment: env,
+            endpoint: endpoint,
+            port: +port,
+            blockchain: {
+              name: blk, // or otp:2043, base:8453, gnosis:100
+            },
+          });
+
+          const nodeInfo = await dkg.node.info();
+          console.log(nodeInfo);
+          assert(nodeInfo.version, "Failed to connect to the node!");
+
+          /* Create Knowledge Asset */
+          if (assetUAL.value) storeAssetUAL(assetUAL.value);
+          else {
+            const publicAssertion = JSON.parse(asset.value);
+            let result = await dkg.asset.create(
+              { public: publicAssertion },
+              { epochsNum: 2 },
+            );
+            console.log(result);
+            assert(result.UAL, "Failed to create KA!");
+            storeAssetUAL(result.UAL);
+          }
+          loadAssetUAL();
+
+          /* Create paranet */
+          result = await dkg.paranet.create(assetUAL.value, {
+            paranetName,
+            paranetDescription,
+          });
+          console.log(result);
+          assert(result.paranetUAL, "Failed to create paranet.");
+          console.log(result.paranetUAL);
+          paranetUAL.value = result.paranetUAL;
+          localStorage.removeItem("assetUAL");
+          window.onbeforeunload = function () {
+            return (
+              "Are you sure you want to leave? " +
+              "Please make sure you stored your paranet UAL."
+            );
+          };
+        } catch (err) {
+          console.error(err);
+          alert(err.message ?? "Unexpected error occurred.");
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      createForm.addEventListener("submit", createParanet);
+
+      function checkForDKGjs() {
+        if (!window.Web3 || !window.DKG) setTimeout(checkForDKGjs, 100);
+        else {
+          console.timeEnd("Loading DKG.js");
+          setLoading(false);
+        }
+      }
+      console.time("Loading DKG.js");
+      setLoading(true);
+      checkForDKGjs();
+
+      const DEFAULT_ASSET = {
+        "@context": "https://schema.org",
+        "@id": "https://tesla.modelX/2321",
+        "@type": "Car",
+        name: "Tesla Model X",
+        brand: {
+          "@type": "Brand",
+          name: "Tesla",
+        },
+        model: "Model X",
+        manufacturer: {
+          "@type": "Organization",
+          name: "Tesla, Inc.",
+        },
+        fuelType: "Electric",
+        numberOfDoors: 5,
+        vehicleEngine: {
+          "@type": "EngineSpecification",
+          engineType: "Electric motor",
+          enginePower: {
+            "@type": "QuantitativeValue",
+            value: "416",
+            unitCode: "BHP",
+          },
+        },
+        driveWheelConfiguration: "AWD",
+        speed: {
+          "@type": "QuantitativeValue",
+          value: "250",
+          unitCode: "KMH",
+        },
+      };
+      loadAssetUAL();
+    </script>
+  </body>
+</html>
